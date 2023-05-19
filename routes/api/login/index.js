@@ -8,9 +8,9 @@ const loginController = require("../../../controllers/loginController");
 // Change the routes to post
 
 // Send the OTP to mailId
-router.get("/verifyemail", loginController.sendOTP);
+router.get("/sendotp", loginController.sendOTP);
 
 // Verify the OTP
-router.post("/verifyotp", loginController.verifyOTP);
+router.post("/verifyemail", loginController.verifyOTP);
 
 module.exports = router;

@@ -1,3 +1,5 @@
+// Basic Config for Nodemailer with Gmail and util function for sending OTP to a recepient
+
 const nodemailer = require("nodemailer");
 
 module.exports.sendMail = async (receipientMail, otp, isUserRegistered) => {

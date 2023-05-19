@@ -20,6 +20,8 @@ const getrandomNumber = () => {
 };
 
 /*
+Route for hitting the following Controller('baseUrl/api/login/sendotp')
+
 Send OTP Controller Action (Logic explained below):
 1. Check if the User is registered or not.
 2. If the user is not registered send the info to register the user first
@@ -94,7 +96,9 @@ module.exports.sendOTP = async (req, res) => {
 };
 
 /*
-Send OTP Controller Action (Logic explained below):
+Route for hitting the following Controller('baseUrl/api/login/verifyemail')
+
+Verify OTP Controller Action (Logic explained below):
 
 1. Check if the User is registered or not.
 
@@ -112,7 +116,7 @@ Send OTP Controller Action (Logic explained below):
 5. If the OTP match:
   a. Check if the OTP has expired or not.
   b. If the OTP has not expired create a token and sent to the User
-  c. Change the OTP to a value less than 0 so that it can't be reused
+  c. Change the OTP to a value less than 1 so that it can't be reused
   d. send relevant response. 
 */
 
@@ -158,10 +162,11 @@ module.exports.verifyOTP = async (req, res) => {
     // Check minutes elapsed after the last otp generated time
     let minutes = (Date.now() - userinfo.otpGeneratedTime) / (1000 * 60);
 
-    /* As after a succesfull login we are setting the otp to a random value<0, 
+    /* As after a succesfull login we are setting the otp to a random value<1, 
        so we are redirecting the user to generate a new one
     */
-    if (userinfo.currentOtp < 0) {
+
+    if (userinfo.currentOtp < 1) {
       return res.status(400).json({
         message: "OTP EXPIRED. Please generate a new one",
       });
@@ -197,7 +202,6 @@ module.exports.verifyOTP = async (req, res) => {
     }
 
     //OTP MATCHES
-
     if (minutes > 5) {
       return res.status(400).json({
         message: "OTP EXPIRED. Please generate a new one",
