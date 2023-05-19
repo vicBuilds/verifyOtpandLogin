@@ -28,7 +28,7 @@ Send OTP Controller Action (Logic explained below):
 3. If user is registered do the following:
   a. Find the login info for the user.
   b. If loginInfo exists check whether the account is blocked or not
-  c. If Account is not blocked update the generated otp and time
+  c. If Account is not blocked update the generated otp and time only if the last otp generated time was more than a minute
   d. If noLogin info is found(means the user is logging in for the first time) create a new one.
   e. Send the OTP via mail to the receipient
   f. Send relevant response to FE
@@ -68,8 +68,11 @@ module.exports.sendOTP = async (req, res) => {
       // If Otp is set than a minute ago
 
       let lastOtpSetTime = userinfo.otpGeneratedTime;
-      let delay = lastOtpSetTime - Date.now() / (1000 * 60);
-      if (delay < 1) {
+      let currentTimeinMilli = Date.now();
+
+      let delay = (currentTimeinMilli - lastOtpSetTime) / (1000 * 60);
+      console.log("Delay is ", delay);
+      if (delay <= 1) {
         return res.status(400).json({
           message: `OTP Generated less than a min ago. Wait for a min`,
           data: [],
@@ -80,6 +83,7 @@ module.exports.sendOTP = async (req, res) => {
       userinfo.otpGeneratedTime = Date.now();
       await userinfo.save();
     }
+
     // if info doesn't exists then create one
     else {
       await userLoginInfo.create({
