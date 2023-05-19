@@ -64,6 +64,18 @@ module.exports.sendOTP = async (req, res) => {
           data: [],
         });
       }
+
+      // If Otp is set than a minute ago
+
+      let lastOtpSetTime = userinfo.otpGeneratedTime;
+      let delay = lastOtpSetTime - Date.now() / (1000 * 60);
+      if (delay < 1) {
+        return res.status(400).json({
+          message: `OTP Generated less than a min ago. Wait for a min`,
+          data: [],
+        });
+      }
+
       userinfo.currentOtp = otp;
       userinfo.otpGeneratedTime = Date.now();
       await userinfo.save();
