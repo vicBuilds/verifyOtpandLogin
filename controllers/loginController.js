@@ -18,7 +18,7 @@ const getrandomNumber = () => {
 /*
 Send OTP Route:
 1. Check if the User is registered or not.
-2. 
+2. If the user is not registered send the info to register the user first
 
 */
 
@@ -35,43 +35,24 @@ module.exports.sendOTP = async (req, res) => {
     }
 
     const otp = await getrandomNumber();
-    /*GET A RANDOM SEVEN DIGIT OTP */
+    let ismailSent = await utils.sendMail(email, otp, isUserRegistered);
 
-    // Sending mail.
-    // let testAccount = await nodemailer.createTestAccount();
+    // Search for the mail in the the login info
+    let userinfo = await userLoginInfo.findOne({
+      email: email,
+    });
 
-    // /* Create transporter */
-    // const transporter = await nodemailer.createTransport({
-    //   service: "gmail",
-    //   host: "smtp.gmail.com",
-    //   auth: {
-    //     user: process.env.USER_EMAIL,
-    //     pass: process.env.Nodemail_PASSWORD,
-    //   },
-    // });
+    // if info exists then update the OTP and otp genratedtime
+    if (userinfo) {
+      userinfo.currentOtp = otp;
+      userinfo.otpGeneratedTime = Date.now();
+      await userinfo.save();
+    }
 
-    /*Send Mail */
-    // let info = await transporter.sendMail({
-    //   from: "noreply@app.com", // sender address
-    //   to: `${email}`, // list of receivers
-    //   subject: "OTP FOR LOGIN✔", // Subject line
-    //   text: `OTP FOR USER ${email}`, // plain text body
-    //   html: `<div>
-    //   <h3>Hello ${isUserRegistered.name}, <br><br><br> The OTP for Login is
-    //   ${otp}. Please remember the OTP is valid for 5mins only.<br>
-    //   <br><br>
-    //   Regards,<br>
-    //   App Login Team
-    //   </h3>
-    //   <br><br>
-    //   <sub>This is a system generated mail. Please don't reply</sub>
-    //   </div>`, // html body
-    // });
-
-    // console.log("Message sent: %s", info.messageId);
-    await utils.sendMail(email, otp, isUserRegistered);
-
-    return res.send("<h1>Working on this</h1>");
+    return res.status(200).json({
+      message: `OTP Send to Mail ${email} and valid for 5 mins. Check your mail`,
+      data: [],
+    });
   } catch (err) {
     console.log("Eror is ", err);
     return res.status(500).json({

@@ -22,9 +22,9 @@ module.exports.sendMail = async (receipientMail, otp, isUserRegistered) => {
       subject: "OTP FOR LOGIN✔", // Subject line
       text: `OTP FOR USER ${email}`, // plain text body
       html: `<div>
-      <h3>Hello ${isUserRegistered.name}, <br><br><br> The OTP for Login is
+      <h3>Hello ${isUserRegistered.name}, <br><br> The OTP for Login is
       ${otp}. Please remember the OTP is valid for 5mins only.<br>
-      <br><br>
+      <br>
       Regards,<br>
       App Login Team
       </h3>
