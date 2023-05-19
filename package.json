@@ -11,10 +11,6 @@
   "version": "1.0.0",
   "description": "This is a project on OTP based login send via email ",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
-  },
   "author": "Victor Mitra",
   "license": "ISC"
 }
