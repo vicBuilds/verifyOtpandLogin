@@ -71,8 +71,14 @@ json
   "otp": "123456"
 }
 
-
 Replace http://localhost:3000 with the actual URL where your application is deployed.
+
+## Curl Requests:
+1. Register : curl -X POST -H "Content-Type: application/json" -d '{"name":"John Doe","email":"user@example.com"}' https://relieved-tutu-ant.cyclic.app/api/register
+2. Send OTP: curl -X GET -H "Content-Type: application/json" -d '{"email":"user@example.com"}' https://relieved-tutu-ant.cyclic.app/api/login/sendotp
+3. VerifyEmail: curl -X POST -H "Content-Type: application/json" -d '{"otp":"123456","email":"user@example.com"}' https://relieved-tutu-ant.cyclic.app/api/login/verifyemail
+
+
 
 
 ### Developed By: Victor Mitra(victor.mitra15@gmail.com)
