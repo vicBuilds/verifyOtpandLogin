@@ -6,6 +6,11 @@ const router = express.Router();
 const loginController = require("../../../controllers/loginController");
 
 // Change the routes to post
+
+// Send the OTP to mailId
 router.get("/verifyemail", loginController.sendOTP);
+
+// Verify the OTP
+router.post("/verifyotp", loginController.verifyOTP);
 
 module.exports = router;
