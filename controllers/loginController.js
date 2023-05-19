@@ -165,7 +165,7 @@ module.exports.verifyOTP = async (req, res) => {
       //   Check if the time for the blocking of the account has surpassed by one hour or not
       if (timegap < 1) {
         return res.status(403).json({
-          message: `Maximum No of Wrong Attempts Exhausted. Account is Locked untill ${accountUnlockTime}`,
+          message: `Maximum No of Wrong Attempts Exhausted. Account is Locked. Try after one hour`,
         });
       }
     }
@@ -202,9 +202,7 @@ module.exports.verifyOTP = async (req, res) => {
 
         await userinfo.save();
         return res.status(403).json({
-          message: `Wrong OTP. Maximum No of Wrong Attempts Exhausted. Please try after ${new Date(
-            currentTime + 1000 * 60 * 60
-          )}`,
+          message: `Wrong OTP. Maximum No of Wrong Attempts Exhausted. Please try after 1 hour`,
         });
       }
 
