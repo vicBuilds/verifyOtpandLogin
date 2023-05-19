@@ -10,8 +10,9 @@ app.use(
   })
 );
 
-// Get any request from client look for the index page inside the routes
+const db = require("./config/mongoose");
 
+// Get any request from client look for the index page inside the routes
 app.use("/", require("./routes/index"));
 
 app.listen(port, (err) => {
